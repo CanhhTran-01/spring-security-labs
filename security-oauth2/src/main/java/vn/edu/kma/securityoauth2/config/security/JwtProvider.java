@@ -24,8 +24,8 @@ public class JwtProvider {
     public String generateToken(User user) {
         Instant now = Instant.now(); // tính expired time cho JWT
 
-        // 1. Cấu hình Header (Thuật toán HS512)
-        JwsHeader header = JwsHeader.with(MacAlgorithm.HS512).build();
+        // 1. Cấu hình Header (Thuật toán HS256)
+        JwsHeader header = JwsHeader.with(MacAlgorithm.HS256).build();
 
         // 2. Cấu hình Payload (Claims)
         JwtClaimsSet claims = JwtClaimsSet.builder()

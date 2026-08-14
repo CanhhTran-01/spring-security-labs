@@ -1,6 +1,7 @@
 package vn.edu.kma.securityoauth2.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import vn.edu.kma.securityoauth2.response.ApiResponse;
 import vn.edu.kma.securityoauth2.response.FieldErrorDetail;
-
-import java.util.List;
 
 @Slf4j
 @RestControllerAdvice(basePackages = "vn.edu.kma.securityoauth2")
@@ -45,8 +44,7 @@ public class GlobalExceptionHandler {
 
     // 2. Business exception
     @ExceptionHandler(AppException.class)
-    public ResponseEntity<ApiResponse<Void>> handlingBaseException(
-            AppException exception, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<Void>> handlingBaseException(AppException exception, HttpServletRequest request) {
 
         log.error(
                 "Business Exception: code={}, message={}, path={}",

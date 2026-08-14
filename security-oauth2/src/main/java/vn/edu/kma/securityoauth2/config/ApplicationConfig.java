@@ -25,7 +25,7 @@ public class ApplicationConfig {
      **/
     @Bean
     public JwtEncoder jwtEncoder() {
-        SecretKey key = new SecretKeySpec(signerKey.getBytes(), "HmacSHA512");
+        SecretKey key = new SecretKeySpec(signerKey.getBytes(), "HmacSHA256");
         return new NimbusJwtEncoder(new ImmutableSecret<>(key));
     }
 
@@ -34,9 +34,9 @@ public class ApplicationConfig {
      **/
     @Bean
     public JwtDecoder jwtDecoder() {
-        SecretKey key = new SecretKeySpec(signerKey.getBytes(), "HmacSHA512");
+        SecretKey key = new SecretKeySpec(signerKey.getBytes(), "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(key)
-                .macAlgorithm(MacAlgorithm.HS512)
+                .macAlgorithm(MacAlgorithm.HS256)
                 .build();
     }
 

@@ -11,7 +11,7 @@ import vn.edu.kma.securityoauth2.enums.RoleCode;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Roles extends BaseEntity{
+public class Roles extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20, unique = true, nullable = false)

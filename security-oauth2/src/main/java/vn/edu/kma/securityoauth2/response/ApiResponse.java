@@ -1,12 +1,11 @@
 package vn.edu.kma.securityoauth2.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import vn.edu.kma.securityoauth2.exception.ErrorCode;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Builder
@@ -53,4 +52,3 @@ public class ApiResponse<T> {
                 .build();
     }
 }
-

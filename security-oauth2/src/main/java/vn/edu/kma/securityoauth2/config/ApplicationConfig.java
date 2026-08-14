@@ -1,6 +1,8 @@
 package vn.edu.kma.securityoauth2.config;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +14,6 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
 @Configuration
 public class ApplicationConfig {
 
@@ -22,7 +21,7 @@ public class ApplicationConfig {
     private String signerKey;
 
     /**
-     Bean dùng để TẠO JWT Token
+     * Bean dùng để TẠO JWT Token, hiện tại chỉ dùng mặc định, không custom
      **/
     @Bean
     public JwtEncoder jwtEncoder() {
@@ -31,16 +30,18 @@ public class ApplicationConfig {
     }
 
     /**
-     Bean dùng để XÁC THỰC JWT Token
+     * Bean dùng để XÁC THỰC JWT Token, hiện tại chỉ dùng mặc định, không custom
      **/
     @Bean
     public JwtDecoder jwtDecoder() {
         SecretKey key = new SecretKeySpec(signerKey.getBytes(), "HmacSHA512");
-        return NimbusJwtDecoder.withSecretKey(key).macAlgorithm(MacAlgorithm.HS512).build();
+        return NimbusJwtDecoder.withSecretKey(key)
+                .macAlgorithm(MacAlgorithm.HS512)
+                .build();
     }
 
     /**
-     Bean dùng để mã hóa mật khẩu trước khi lưu vào DB - thuật toán BCrypt
+     * Bean dùng để mã hóa mật khẩu trước khi lưu vào DB - thuật toán BCrypt
      **/
     @Bean
     public PasswordEncoder passwordEncoder() {

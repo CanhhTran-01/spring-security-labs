@@ -1,5 +1,7 @@
 package vn.edu.kma.securityoauth2.config.security;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -9,9 +11,6 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Component;
 import vn.edu.kma.securityoauth2.entity.User;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 
 @Component
 @RequiredArgsConstructor
@@ -38,7 +37,6 @@ public class JwtProvider {
                 .build();
 
         // 3. Ký và nhả ra Token String
-        return jwtEncoder.encode(JwtEncoderParameters.from(header, claims))
-                .getTokenValue();
+        return jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
     }
 }

@@ -2,6 +2,7 @@ package vn.edu.kma.securityoauth2.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,24 +19,45 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtDecoder jwtDecoder) {
+    public SecurityFilterChain filterChain(
+            HttpSecurity http,
+            JwtDecoder jwtDecoder,
+            CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
+            CustomAccessDeniedHandler customAccessDeniedHandler) {
+
+        // SecurityContextHolderFilter
+        //      ├── Load SecurityContext
+        //      ├── SecurityContextHolder.set(SecurityContext)
+
         http
-                .csrf(AbstractHttpConfigurer::disable) // tắt csrf
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // stateless vì dùng JWT
-                // phân quyền tầng 1 - Endpoint Layer
-                .authorizeHttpRequests(request -> request
-                        // ai cùng vào được - .permitAll()
-                        .requestMatchers("/api/public/**").permitAll()
-                        // phải đăng nhập để vào  - .anyRequest().authenticated()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")   // Phải là ADMIN
-                        .requestMatchers("/api/lecturer/**").hasRole("LECTURER")   // Phải là LECTURER
-                        .requestMatchers("/api/student/**").hasRole("STUDENT")   // Phải là STUDENT
-                        .anyRequest().authenticated()
-                )
-                // config Resource Server dùng bean JWT Decoder phục vụ xác minh JWT trong request's header
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt.decoder(jwtDecoder)));
+                // STATELESS: không lưu SecurityContext vào HTTP Session
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                // CorsFilter
+                .cors(Customizer.withDefaults())
+
+                // CsrfFilter
+                .csrf(AbstractHttpConfigurer::disable)
+
+                // AuthentcationFilter
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder))
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)) // bỏ dòng này thì sao ?
+
+                // ExceptionTranslatonFilter
+                .exceptionHandling((ehc) -> ehc.authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler))
+
+                // AuthorizationFilter
+                .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/public/**")
+                        .permitAll()
+                        .requestMatchers("/api/v1/admin/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers("/api/v1/lecturer/**")
+                        .hasRole("LECTURER")
+                        .requestMatchers("/api/v1/student/**")
+                        .hasRole("STUDENT")
+                        .anyRequest()
+                        .authenticated());
 
         return http.build();
     }
@@ -55,4 +77,3 @@ public class SecurityConfig {
         return jwtAuthenticationConverter;
     }
 }
-

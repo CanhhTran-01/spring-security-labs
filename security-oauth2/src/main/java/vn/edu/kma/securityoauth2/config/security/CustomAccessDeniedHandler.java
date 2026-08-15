@@ -29,7 +29,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
             throws IOException, ServletException {
 
         // quy định ErrorCode
-        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+        ErrorCode errorCode = ErrorCode.FORBIDDEN;
 
         // handle response trả về
         response.setStatus(errorCode.getHttpStatus().value()); // set Status cho response

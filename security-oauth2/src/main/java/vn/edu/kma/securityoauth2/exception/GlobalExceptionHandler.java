@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -56,7 +57,18 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error(exception.getErrorCode(), request.getRequestURI()));
     }
 
-    // 3. Fallback
+    // 3. Method Authorization Exception
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAccessDeniedException(
+            AuthorizationDeniedException exception, HttpServletRequest request) {
+
+        log.warn("Authorization denied at [{}]: {}", request.getRequestURI(), exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.error(ErrorCode.FORBIDDEN, request.getRequestURI()));
+    }
+
+    // 4. Fallback
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handlingRuntimeException(Exception exception, HttpServletRequest request) {
 

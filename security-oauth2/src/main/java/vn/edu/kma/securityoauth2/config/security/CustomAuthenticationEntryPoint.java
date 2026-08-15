@@ -29,7 +29,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
             throws IOException, ServletException {
 
         // quy định ErrorCode
-        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+        ErrorCode errorCode = ErrorCode.UNAUTHENTICATED;
 
         // handle response trả về
         response.setStatus(errorCode.getHttpStatus().value()); // set Status cho response

@@ -41,21 +41,27 @@ public class SecurityConfig {
 
                 // AuthentcationFilter
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder))
-                        .authenticationEntryPoint(customAuthenticationEntryPoint)) // bỏ dòng này thì sao ?
+                        .authenticationEntryPoint(customAuthenticationEntryPoint))
 
                 // ExceptionTranslatonFilter
                 .exceptionHandling((ehc) -> ehc.authenticationEntryPoint(customAuthenticationEntryPoint)
                         .accessDeniedHandler(customAccessDeniedHandler))
 
                 // AuthorizationFilter
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/public/**")
+                // Layer 1 - endpoints level
+                .authorizeHttpRequests(request -> request
+
+                        // Phân vùng chức năng: "Role này có được truy cập khu vực API này không?"
+                        .requestMatchers("/api/v1/public/**")
                         .permitAll()
                         .requestMatchers("/api/v1/admin/**")
                         .hasRole("ADMIN")
-                        .requestMatchers("/api/v1/lecturer/**")
-                        .hasRole("LECTURER")
-                        .requestMatchers("/api/v1/student/**")
-                        .hasRole("STUDENT")
+                        .requestMatchers("/api/v1/management/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers("/api/v1/students/**")
+                        .hasAnyRole("ADMIN", "MANAGER", "STUDENT")
+                        .requestMatchers("/api/v1/lecturers/**")
+                        .hasAnyRole("ADMIN", "MANAGER", "LECTURER")
                         .anyRequest()
                         .authenticated());
 

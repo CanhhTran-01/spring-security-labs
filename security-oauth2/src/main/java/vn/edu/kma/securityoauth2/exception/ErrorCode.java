@@ -23,7 +23,7 @@ public enum ErrorCode {
     // 4xxx - Authentication & Authorization Errors
     // =====================================
     UNAUTHENTICATED(4000, "Đăng nhập để sử dụng dịch vụ", HttpStatus.UNAUTHORIZED),
-    UNAUTHORIZED(4001, "Không có quyền truy cập", HttpStatus.FORBIDDEN),
+    FORBIDDEN(4001, "Không có quyền truy cập", HttpStatus.FORBIDDEN),
 
     // enum cho cả 2 case: không tồn tại & sai mật khẩu
     USER_NOT_FOUND(4002, "Tài khoản hoặc mật khẩu không chính xác", HttpStatus.UNAUTHORIZED),

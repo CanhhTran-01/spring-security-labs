@@ -1,4 +1,4 @@
-package vn.edu.kma.securityoauth2.config.security;
+package vn.edu.kma.securityoauth2.security;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;

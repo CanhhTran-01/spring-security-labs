@@ -7,7 +7,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vn.edu.kma.securityoauth2.config.security.JwtProvider;
 import vn.edu.kma.securityoauth2.entity.Roles;
 import vn.edu.kma.securityoauth2.entity.User;
 import vn.edu.kma.securityoauth2.enums.RoleCode;
@@ -19,6 +18,7 @@ import vn.edu.kma.securityoauth2.repository.UserRepository;
 import vn.edu.kma.securityoauth2.request.LoginRequest;
 import vn.edu.kma.securityoauth2.request.RegisterRequest;
 import vn.edu.kma.securityoauth2.response.AuthResponse;
+import vn.edu.kma.securityoauth2.security.JwtProvider;
 
 @Slf4j
 @Service

@@ -16,12 +16,18 @@ import vn.edu.kma.securityoauth2.service.AuthService;
 @RequestMapping("/api/v1/public")
 @RequiredArgsConstructor
 public class AuthController {
-
     private final AuthService authService;
 
-    @PostMapping("/login")
-    public ResponseEntity<ApiResponse<AuthResponse>> login(@RequestBody LoginRequest request) {
-        return ResponseEntity.ok(ApiResponse.success(authService.login(request)));
+    // CÁCH 1: Trực tiếp - Endpoint thuần, tự xử lý hết
+    @PostMapping("/login1")
+    public ResponseEntity<ApiResponse<AuthResponse>> login1(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(ApiResponse.success(authService.login1(request)));
+    }
+
+    // CÁCH 2: Tận dụng Spring Security - Endpoint + AuthenticationManager (phổ biến nhất)
+    @PostMapping("/login2")
+    public ResponseEntity<ApiResponse<AuthResponse>> login2(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(ApiResponse.success(authService.login2(request)));
     }
 
     @PostMapping("/register")

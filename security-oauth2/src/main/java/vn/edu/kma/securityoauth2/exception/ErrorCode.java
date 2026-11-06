@@ -24,12 +24,13 @@ public enum ErrorCode {
     // =====================================
     UNAUTHENTICATED(4000, "Đăng nhập để sử dụng dịch vụ", HttpStatus.UNAUTHORIZED),
     FORBIDDEN(4001, "Không có quyền truy cập", HttpStatus.FORBIDDEN),
+    INVALID_CREDENTIALS(4002, "Email hoặc mật khẩu không đúng", HttpStatus.UNAUTHORIZED),
 
     // enum cho cả 2 case: không tồn tại & sai mật khẩu
-    USER_NOT_FOUND(4002, "Tài khoản hoặc mật khẩu không chính xác", HttpStatus.UNAUTHORIZED),
+    USER_NOT_FOUND(4003, "Tài khoản hoặc mật khẩu không chính xác", HttpStatus.UNAUTHORIZED),
 
-    EMAIL_EXISTED(4003, "Email đã tồn tại", HttpStatus.NOT_FOUND),
-    ROLE_NOT_FOUND(4004, "Sai role code hoặc role không tương ứng không tồn tại", HttpStatus.NOT_FOUND);
+    EMAIL_EXISTED(4004, "Email đã tồn tại", HttpStatus.NOT_FOUND),
+    ROLE_NOT_FOUND(4005, "Sai role code hoặc role không tương ứng không tồn tại", HttpStatus.NOT_FOUND);
 
     private final int code;
     private final String message;
